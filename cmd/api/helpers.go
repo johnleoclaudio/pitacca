@@ -5,19 +5,22 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/google/uuid"
 	"github.com/julienschmidt/httprouter"
 )
 
-func (app *application) readUserIDParam(r *http.Request) (string, error) {
+func (app *application) readUserIDParam(r *http.Request) (uuid.UUID, error) {
+	var userID uuid.UUID
 	// When using httprouter, URL parameters are stored in the request context.
 	// Use ParamsFromContext() to retrieve a slice containing these parameter names and values
 	params := httprouter.ParamsFromContext(r.Context())
 
 	// Use the ByName() method to get the value of the "id" parameter from the slice.
 	// /v1/users/{id}
-	userID := params.ByName("id")
-	if userID == "" {
-		return "", errors.New("invalid ID parameter")
+	id := params.ByName("id")
+	userID, err := uuid.Parse(id)
+	if err != nil || id == "" {
+		return userID, errors.New("invalid ID parameter")
 	}
 
 	return userID, nil
@@ -48,5 +51,4 @@ func (app *application) writeJSON(w http.ResponseWriter, status int, data any, h
 	w.Write(js)
 
 	return nil
-
 }
