@@ -15,7 +15,7 @@ func (app *application) createUser(w http.ResponseWriter, r *http.Request) {
 func (app *application) getUser(w http.ResponseWriter, r *http.Request) {
 	userID, err := app.readUserIDParam(r)
 	if err != nil {
-		http.NotFound(w, r)
+		app.notFoundResponse(w, r)
 		return
 	}
 
@@ -29,7 +29,6 @@ func (app *application) getUser(w http.ResponseWriter, r *http.Request) {
 
 	err = app.writeJSON(w, http.StatusOK, user, nil)
 	if err != nil {
-		app.logger.Error(err.Error())
-		http.Error(w, "the server encountered a problem and could not process your request", http.StatusInternalServerError)
+		app.serverErrorResponse(w, r, err)
 	}
 }
