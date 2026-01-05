@@ -9,6 +9,8 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+type envelope map[string]any
+
 func (app *application) readUserIDParam(r *http.Request) (uuid.UUID, error) {
 	var userID uuid.UUID
 	// When using httprouter, URL parameters are stored in the request context.
