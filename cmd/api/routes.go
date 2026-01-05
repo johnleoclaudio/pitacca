@@ -19,5 +19,5 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodPost, "/v1/users", app.createUser)
 	router.HandlerFunc(http.MethodGet, "/v1/users/:id", app.getUser)
 
-	return router
+	return app.recoverPanic(router)
 }
