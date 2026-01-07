@@ -14,7 +14,7 @@ func (app *application) createUser(w http.ResponseWriter, r *http.Request) {
 	var input struct {
 		Email string `json:"email"`
 	}
-	err := app.readJSON(r, &input)
+	err := app.readJSON(w, r, &input)
 	if err != nil {
 		// helps communicate the specific response
 		app.badRequestResponse(w, r, err)
