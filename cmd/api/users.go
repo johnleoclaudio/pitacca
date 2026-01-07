@@ -16,7 +16,8 @@ func (app *application) createUser(w http.ResponseWriter, r *http.Request) {
 	}
 	err := app.readJSON(r, &input)
 	if err != nil {
-		app.errorResponse(w, r, http.StatusBadRequest, err.Error())
+		// helps communicate the specific response
+		app.badRequestResponse(w, r, err)
 		return
 	}
 
